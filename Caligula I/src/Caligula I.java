@@ -50,10 +50,11 @@ class CaligulaI {
             JFileChooser fileChooser = new JFileChooser();
             int returnValue = fileChooser.showOpenDialog(null);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
-                try (Scanner scanner = new Scanner(fileChooser.getSelectedFile())) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(fileChooser.getSelectedFile()))) {
                     StringBuilder sb = new StringBuilder();
-                    while (scanner.hasNextLine()) {
-                        sb.append(scanner.nextLine());
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line).append("\n"); // Добавляем перенос строки
                     }
                     String decryptedText = decrypt(sb.toString(), 7); // Дешифруем текст обратно
                     textArea.setText(decryptedText);
@@ -62,7 +63,6 @@ class CaligulaI {
                 }
             }
         });
-
         fileMenu.add(saveItem);
         fileMenu.add(openItem);
         menuBar.add(fileMenu);
